@@ -6,7 +6,11 @@ const app = express();
 
 mongoose
   .connect(
-    "http://localhost:27017/"
+    "mongodb://localhost:27017/to_do",
+    {
+       useNewUrlParser: true,
+       useUnifiedTopology: true 
+    }
   )
   .then(() => {
     console.log("Connected to database!");
