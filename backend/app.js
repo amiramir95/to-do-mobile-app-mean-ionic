@@ -5,9 +5,7 @@ const mongoose = require("mongoose");
 const app = express();
 
 mongoose
-  .connect(
-    "http://localhost:27017/"
-  )
+  .connect("http://localhost:27017/", { useNewUrlParser: true })
   .then(() => {
     console.log("Connected to database!");
   })
