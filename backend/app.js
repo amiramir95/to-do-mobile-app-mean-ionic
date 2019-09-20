@@ -9,7 +9,7 @@ mongoose
     "mongodb://localhost:27017/to_do",
     {
        useNewUrlParser: true,
-       useUnifiedTopology: true
+       useUnifiedTopology: true 
     }
   )
   .then(() => {
