@@ -4,6 +4,8 @@ export class Task {
   state: boolean;
   createdAt: Date;
   dueDate: Date;
+  listId: string;
+  userId: string;
 
   constructor() {}
 }

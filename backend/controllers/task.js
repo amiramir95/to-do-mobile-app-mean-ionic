@@ -4,7 +4,9 @@ exports.createTask = (req, res, next) => {
   const task = new Task({
     title: req.body.title,
     state: req.body.state,
-    dueDate: req.body.dueDate
+    dueDate: req.body.dueDate,
+    listId: req.body.listId,
+    userId: req.body.userId
   });
   task.save().then(createdTask => {
     res.status(201).json({
@@ -23,6 +25,21 @@ exports.getTasks = (req, res, next) => {
   });
 };
 
+exports.getTaskByUserId = (req, res, next) => {
+  Task.find({
+    userId: req.params.userId
+  })
+    .then(documents => {
+      res.status(200).json({
+        tasks: documents
+      });
+    })
+    .catch(error => {
+      res.status(404).json({
+        message: 'User lists not found!'
+      });
+    });
+};
 exports.getTask = (req, res, next) => {
   Task.findById(req.params.id)
     .then(task => {

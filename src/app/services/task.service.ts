@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class TaskService {
   private BASE_URL = 'http://localhost:3000/api/task';
   public ALL_TASKS_URL = `${this.BASE_URL}/`;
-  private UPDATE_TASK_URL = `${this.BASE_URL}/`;
+  private ADD_UPDATE_TASK_URL = `${this.BASE_URL}/`;
 
   private tasks: Task[] = [];
   private tasksUpdated = new Subject<Task[]>();
@@ -20,7 +20,9 @@ export class TaskService {
 
   getTasks() {
     return this.http
-      .get<{ message: string; tasks: any }>(this.ALL_TASKS_URL)
+      .get<{ message: string; tasks: any }>(
+        this.ALL_TASKS_URL + '5d8524a40b74db3244fdf951'
+      )
       .pipe(
         map(response => {
           return response.tasks.map(task => {
@@ -45,9 +47,15 @@ export class TaskService {
     return this.tasksUpdated.asObservable();
   }
 
+  addTask(task: Task) {
+    return this.http.post<{ message: string; taskId: string }>(
+      this.ADD_UPDATE_TASK_URL,
+      task
+    );
+  }
   updateTask(task: Task) {
     return this.http.put<{ message: string; tasks: any }>(
-      this.UPDATE_TASK_URL + task.id,
+      this.ADD_UPDATE_TASK_URL + task.id,
       task
     );
   }

@@ -1,11 +1,15 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>home</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/addtask']">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <!--  <app-my-lists></app-my-lists> -->
   <app-list-tasks></app-list-tasks>
-  
 </ion-content>
