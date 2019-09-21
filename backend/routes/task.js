@@ -6,4 +6,10 @@ const router = express.Router();
 
 router.post('', TaskController.createTask);
 
+router.get('', TaskController.getTasks);
+
+router.get('/:id', TaskController.getTask);
+
+router.put('/:id', TaskController.updateTask);
+
 module.exports = router;
