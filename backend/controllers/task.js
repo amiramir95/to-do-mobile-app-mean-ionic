@@ -40,8 +40,9 @@ exports.getTask = (req, res, next) => {
 };
 
 exports.updateTask = (req, res, next) => {
+  console.log(req.body);
   const task = new Task({
-    _id: req.body.id,
+    _id: req.params.id,
     title: req.body.title,
     state: req.body.state,
     list: req.body.list,

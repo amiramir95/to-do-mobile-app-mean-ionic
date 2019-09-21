@@ -3,6 +3,8 @@ import { TaskService } from 'src/app/services/task.service';
 import { Task } from 'src/app/models/task';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-list-tasks',
@@ -12,7 +14,11 @@ import { filter, map } from 'rxjs/operators';
 export class ListTasksComponent implements OnInit {
   tasks: Task[];
   //  private taskSubscription: Subscription;
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    private router: Router,
+    private location: Location
+  ) {}
 
   ngOnInit() {
     this.getTasks();
@@ -28,5 +34,17 @@ export class ListTasksComponent implements OnInit {
         console.log('something went wrong');
       }
     );
+  }
+
+  onTaskCompleted(task: Task) {
+    this.deleteTask(task);
+  }
+
+  deleteTask(task: Task) {
+    this.tasks.forEach((item, index) => {
+      if (item === task) {
+        this.tasks.splice(index, 1);
+      }
+    });
   }
 }
