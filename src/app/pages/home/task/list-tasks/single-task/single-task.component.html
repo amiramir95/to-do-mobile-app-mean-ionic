@@ -3,9 +3,9 @@
     <ion-col>
       <ion-item>
         <ion-label>
-          Item 1
+          {{ this.task.title }}
         </ion-label>
-        <ion-checkbox></ion-checkbox>
+        <ion-checkbox (click)="onTaskCompleted()"></ion-checkbox>
       </ion-item>
     </ion-col>
   </ion-row>
