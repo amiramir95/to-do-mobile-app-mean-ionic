@@ -5,21 +5,22 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ManageTaskPage } from './manage-task.page';
+import { AuthPage } from './auth.page';
+import { LoginPage } from './login/login.page';
+import { SignupPage } from './signup/signup.page';
 
 const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
-    component: ManageTaskPage
+    component: AuthPage
   },
   {
-    path: ':taskId',
-    component: ManageTaskPage
+    path: 'signup',
+    component: SignupPage
   },
   {
-    path: 'delete/:taskId',
-    component: ManageTaskPage
+    path: 'login',
+    component: LoginPage
   }
 ];
 
@@ -31,6 +32,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ManageTaskPage]
+  declarations: [AuthPage, LoginPage, SignupPage]
 })
-export class ManageTaskPageModule {}
+export class AuthPageModule {}

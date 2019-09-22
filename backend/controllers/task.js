@@ -8,21 +8,34 @@ exports.createTask = (req, res, next) => {
     listId: req.body.listId,
     userId: req.body.userId
   });
-  task.save().then(createdTask => {
-    res.status(201).json({
-      message: 'Task added successfully',
-      createdTask: createdTask._id
+  task
+    .save()
+    .then(createdTask => {
+      res.status(201).json({
+        message: 'Task added successfully',
+        createdTask: createdTask._id
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Task Creation Failed'
+      });
     });
-  });
 };
 
 exports.getTasks = (req, res, next) => {
-  Task.find().then(documents => {
-    res.status(200).json({
-      message: 'Task fetched successfully!',
-      tasks: documents
+  Task.find()
+    .then(documents => {
+      res.status(200).json({
+        message: 'Task fetched successfully!',
+        tasks: documents
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Fetching Task Failed !'
+      });
     });
-  });
 };
 
 exports.getTaskByUserId = (req, res, next) => {
@@ -35,8 +48,8 @@ exports.getTaskByUserId = (req, res, next) => {
       });
     })
     .catch(error => {
-      res.status(404).json({
-        message: 'User lists not found!'
+      res.status(500).json({
+        message: 'Fetching Task Failed !'
       });
     });
 };
@@ -68,14 +81,34 @@ exports.getTask = (req, res, next) => {
 exports.updateTask = (req, res, next) => {
   console.log(req.body);
   const task = new Task({
-    _id: req.params.id,
+    _id: req.params.taskId,
     title: req.body.title,
     state: req.body.state,
     list: req.body.list,
     createdAt: req.body.createdAt,
     dueDate: req.body.dueDate
   });
-  Task.updateOne({ _id: req.params.id }, task).then(result => {
-    res.status(200).json({ message: 'Task Updated successful!' });
-  });
+  Task.updateOne({ _id: req.params.taskId }, task)
+    .then(result => {
+      res.status(200).json({ message: 'Task Updated successful!' });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Task Update Failed'
+      });
+    });
+};
+
+exports.deleteTask = (req, res, next) => {
+  Task.deleteOne({ _id: req.params.taskId })
+    .then(() => {
+      res.status(200).json({
+        message: 'Task deleted!'
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Task Deletion failed!'
+      });
+    });
 };
