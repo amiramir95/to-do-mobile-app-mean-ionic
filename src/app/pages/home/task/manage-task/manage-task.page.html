@@ -37,9 +37,19 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-button expand="block" class="ion-padding" type="submit">
+          <ion-button
+            *ngIf="this.mode !== 'edit'; else elseBlock"
+            expand="block"
+            class="ion-padding"
+            type="submit"
+          >
             Add Task</ion-button
           >
+          <ng-template #elseBlock>
+            <ion-button expand="block" class="ion-padding" type="submit">
+              Edit Task</ion-button
+            >
+          </ng-template>
         </ion-col>
       </ion-row>
     </ion-grid>

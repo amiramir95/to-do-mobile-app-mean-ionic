@@ -41,10 +41,19 @@ exports.getTaskByUserId = (req, res, next) => {
     });
 };
 exports.getTask = (req, res, next) => {
-  Task.findById(req.params.id)
-    .then(task => {
-      if (task) {
-        res.status(200).json(task);
+  Task.findById(req.params.taskId)
+    .then(document => {
+      if (
+        JSON.stringify(document.userId) ===
+        JSON.stringify('5d8524a40b74db3244fdf951')
+      ) {
+        res.status(200).json({
+          task: document
+        });
+      } else if (document.userId !== '5d8524a40b74db3244fdf951') {
+        res.status(401).json({
+          message: 'Unauthorized, this is not your task'
+        });
       } else {
         res.status(404).json({ message: 'Task not found!' });
       }

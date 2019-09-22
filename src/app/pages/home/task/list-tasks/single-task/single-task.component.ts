@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Task } from 'src/app/models/task';
 import { TaskService } from 'src/app/services/task.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-single-task',
@@ -10,7 +11,10 @@ import { TaskService } from 'src/app/services/task.service';
 export class SingleTaskComponent implements OnInit {
   @Input() task: Task;
   @Output() taskCompleted = new EventEmitter<Task>();
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {}
 
@@ -26,6 +30,9 @@ export class SingleTaskComponent implements OnInit {
     });*/
   }
 
+  onClick() {
+    console.log('test');
+  }
   delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }

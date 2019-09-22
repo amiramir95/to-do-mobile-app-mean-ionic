@@ -3,7 +3,7 @@ export class Task {
   title: string;
   state: boolean;
   createdAt: Date;
-  dueDate: Date;
+  dueDate: string;
   listId: string;
   userId: string;
 

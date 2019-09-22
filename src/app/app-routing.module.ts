@@ -5,8 +5,9 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
   {
-    path: 'addtask',
-    loadChildren: './pages/home/task/add-task/add-task.module#AddTaskPageModule'
+    path: 'task',
+    loadChildren:
+      './pages/home/task/manage-task/manage-task.module#ManageTaskPageModule'
   }
 ];
 

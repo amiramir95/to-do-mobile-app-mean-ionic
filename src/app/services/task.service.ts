@@ -10,8 +10,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TaskService {
   private BASE_URL = 'http://localhost:3000/api/task';
-  public ALL_TASKS_URL = `${this.BASE_URL}/`;
+  public ALL_TASKS_URL = `${this.BASE_URL}/byUser/`;
   private ADD_UPDATE_TASK_URL = `${this.BASE_URL}/`;
+  private GET_TASK_URL = `${this.BASE_URL}/`;
 
   private tasks: Task[] = [];
   private tasksUpdated = new Subject<Task[]>();
@@ -45,6 +46,10 @@ export class TaskService {
 
   getSubject() {
     return this.tasksUpdated.asObservable();
+  }
+
+  getTask(taskId: string) {
+    return this.http.get<{ task: any }>(this.GET_TASK_URL + taskId);
   }
 
   addTask(task: Task) {
