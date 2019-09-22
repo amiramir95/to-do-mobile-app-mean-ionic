@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 export class ListService {
   private BASE_URL = 'http://localhost:3000/api/lists';
   private LISTS_BY_USER_URL = `${this.BASE_URL}/userId/`;
-  private UPDATE_DELETE_LIST_URL = `${this.BASE_URL}/`;
+  private GET_UPDATE_DELETE_LIST_URL = `${this.BASE_URL}/`;
 
   private lists: List[] = [];
   private listsUpdated = new Subject<List[]>();
@@ -38,6 +38,11 @@ export class ListService {
       });
   }
 
+  getList(listId: string) {
+    return this.http.get<{ list: any }>(this.GET_UPDATE_DELETE_LIST_URL + listId);
+  }
+
+
   addList(list: List) {
     return this.http.post<{ message: string; listId: string }>(
       this.BASE_URL,
@@ -45,10 +50,17 @@ export class ListService {
     );
   }
 
+  updateList(list: List) {
+    return this.http.put<{ message: string; updatedList: any }>(
+      this.GET_UPDATE_DELETE_LIST_URL + list.id,
+      list
+    );
+  }
+
   deleteList(listId: string) {
-    console.log(this.UPDATE_DELETE_LIST_URL + listId);
+    console.log(this.GET_UPDATE_DELETE_LIST_URL + listId);
     return this.http.delete<{ message: string; }>(
-      this.UPDATE_DELETE_LIST_URL + listId
+      this.GET_UPDATE_DELETE_LIST_URL + listId
     );
   }
 

@@ -17,6 +17,7 @@ export class SingleListComponent implements OnInit {
   ngOnInit() {}
 
   deleteList(listId: string) {
+    // this.router.navigate(['/home']);
     return this.listService.deleteList(listId).subscribe(() => console.log('list deleted'));
   }
 

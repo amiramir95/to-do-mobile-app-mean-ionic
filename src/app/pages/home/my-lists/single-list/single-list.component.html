@@ -6,7 +6,7 @@
           {{ this.list.name }}
         </ion-label>
         <ion-buttons slot="end">
-            <ion-button color = "success">
+            <ion-button [routerLink]="['/add-list', this.list.id]" color = "success">
               <ion-icon slot="icon-only" name="create"></ion-icon>
             </ion-button>
           
