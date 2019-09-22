@@ -21,11 +21,11 @@ export class ManageTaskPage implements OnInit {
   taskId: string;
   date: string;
   userId: string;
-  userIsAuthenticated = false;
   todayDate = new Date();
   today = new Date().toISOString().slice(0, 10);
   authSubscription: Subscription;
   maxDate: string;
+  userIsAuthenticated = false;
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
@@ -39,12 +39,17 @@ export class ManageTaskPage implements OnInit {
   }
 
   ngOnInit() {
-    this.authSubscription = this.authService
-      .getAuthStatusListener()
-      .subscribe(isAuthenticated => {
-        this.userIsAuthenticated = isAuthenticated;
-        this.userId = this.authService.getUserId();
-      });
+    (async () => {
+      this.authSubscription = this.authService
+        .getAuthStatusListener()
+        .subscribe(isAuthenticated => {
+          this.userIsAuthenticated = isAuthenticated;
+          this.userId = this.authService.getUserId();
+        });
+      this.userId = this.authService.getUserId();
+      await this.delay(200);
+      console.log('User id: ' + this.userId);
+    })();
 
     this.form = new FormGroup({
       title: new FormControl(null, {
@@ -88,16 +93,19 @@ export class ManageTaskPage implements OnInit {
 
   onSubmit() {
     this.task.title = this.form.value.title;
-    this.task.dueDate = new Date(this.form.value.dueDate)
-      .toISOString()
-      .slice(0, 10);
-
+    if (this.form.value.dueDate === null) {
+      this.task.dueDate = null;
+    } else {
+      this.task.dueDate = new Date(this.form.value.dueDate)
+        .toISOString()
+        .slice(0, 10);
+    }
     if (this.mode !== 'edit') {
       this.task.state = false;
-      this.task.userId = '5d8524a40b74db3244fdf951';
+      this.task.userId = this.userId;
 
-      console.log(typeof this.task.dueDate);
-      console.log(JSON.stringify(this.task.dueDate));
+      console.log('typeof :' + this.task.dueDate);
+      console.log(JSON.stringify(this.task));
       this.taskService.addTask(this.task).subscribe(
         response => {
           console.log(response.message + 'Task id: ' + response.taskId);
