@@ -31,7 +31,7 @@
             <ion-datetime
               formControlName="dueDate"
               displayFormat="YYYY-MM-DD"
-              [min]="2016 - 01 - 01"
+              [min]="this?.today"
               [max]="this?.maxDate"
             >
             </ion-datetime>
