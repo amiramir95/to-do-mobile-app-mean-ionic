@@ -1,0 +1,23 @@
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>
+          {{ this.list.name }}
+        </ion-label>
+        <ion-buttons slot="end">
+            <ion-button [routerLink]="['/add-list', this.list.id]" color = "success">
+              <ion-icon slot="icon-only" name="create"></ion-icon>
+            </ion-button>
+          
+            <ion-button (click) = "deleteList(this.list.id)" color = "danger">
+              <ion-icon slot="icon-only" name="remove-circle"></ion-icon>
+            </ion-button>
+         
+      </ion-buttons>
+      </ion-item>
+    </ion-col>
+    
+      
+  </ion-row>
+</ion-grid>
