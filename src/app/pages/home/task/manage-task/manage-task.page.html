@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="this.mode !== 'edit'; else elseBlock">Add Task</ion-title>
-    <ng-template #elseBlock> Edit Task</ng-template>
+    <ion-title *ngIf="this.mode !== 'edit'">Add Task</ion-title>
+    <ion-title *ngIf="this.mode === 'edit'">Edit Task</ion-title>
 
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
