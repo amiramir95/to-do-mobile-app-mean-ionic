@@ -25,7 +25,6 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     this.taskSubscription = this.taskService.getSubject().subscribe(
       tasks => {
         this.tasks = tasks;
-        console.log('aaaaaaaaaaa' + tasks);
       },
       err => {
         console.log('something went wrong');

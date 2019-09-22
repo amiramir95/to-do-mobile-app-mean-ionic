@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Task } from '../models/task';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -14,6 +14,9 @@ export class TaskService {
   private ADD_UPDATE_TASK_URL = `${this.BASE_URL}/`;
   private GET_TASK_URL = `${this.BASE_URL}/`;
   private DELETE_TASK_URL = `${this.BASE_URL}/`;
+
+  dueDate1: Date;
+  dueDate2: Date;
 
   private tasks: Task[] = [];
   private tasksUpdated = new Subject<Task[]>();
@@ -40,7 +43,27 @@ export class TaskService {
       )
       .pipe(map(task => task.filter(taskSingle => !taskSingle.state)))
       .subscribe(transformedTasks => {
-        this.tasks = transformedTasks;
+        this.tasks = transformedTasks.sort((n1, n2) => {
+          this.dueDate1 = new Date(n1.dueDate);
+          this.dueDate2 = new Date(n2.dueDate);
+          if (n1.dueDate === null && n2.dueDate === null) {
+            console.log('zouz');
+            return 0;
+          }
+          if (
+            (n1.dueDate === null && n2.dueDate !== null) ||
+            (n2.dueDate !== null && this.dueDate1 > this.dueDate2)
+          ) {
+            return 1;
+          }
+          if (
+            (n2.dueDate === null && n1.dueDate !== null) ||
+            (n1.dueDate !== null && this.dueDate1 < this.dueDate2)
+          ) {
+            return -1;
+          }
+          return 0;
+        });
         this.tasksUpdated.next([...this.tasks]);
       });
   }

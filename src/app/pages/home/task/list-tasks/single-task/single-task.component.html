@@ -13,10 +13,26 @@
         </ion-item-options>
 
         <ion-item>
-          <ion-label>
+          <ion-label size="5">
             {{ this.task.title }}
+            <div *ngIf="this.task.dueDate">
+              <div class="offer-details">
+                <ion-icon
+                  name="calendar"
+                  class="space-left"
+                  color="primary"
+                ></ion-icon>
+                <ion-text [color]="this?.dateColor" class="space-left">
+                  Due: {{ this.task.dueDate | date }}
+                </ion-text>
+              </div>
+            </div>
           </ion-label>
-          <ion-checkbox (click)="onTaskCompleted()"></ion-checkbox>
+          <ion-checkbox
+            size="7"
+            (click)="onTaskCompleted()"
+            position="end"
+          ></ion-checkbox>
         </ion-item>
 
         <ion-item-options side="end">

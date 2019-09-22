@@ -12,12 +12,21 @@ export class SingleTaskComponent implements OnInit {
   @Input() task: Task;
   @Output() taskCompleted = new EventEmitter<Task>();
   @Output() taskDeleted = new EventEmitter<Task>();
+  dateColor: string;
+  todayDate = new Date();
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    const dueDate = new Date(this.task.dueDate);
+    if (this.todayDate > dueDate) {
+      this.dateColor = 'danger';
+    } else {
+      this.dateColor = 'tertiary';
+    }
+  }
 
   onTaskCompleted() {
     this.task.state = true;
