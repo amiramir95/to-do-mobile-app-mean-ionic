@@ -38,6 +38,24 @@
           </ion-item>
         </ion-col>
       </ion-row>
+      <div *ngIf="this.mode !== 'edit'">
+        <ion-row>
+          <ion-col>
+            <ion-list>
+              <ion-item>
+                <ion-label>List :(Optional) </ion-label>
+                <ion-select formControlName="listId">
+                  <div *ngFor="let list of lists">
+                    <ion-select-option [value]="list.id"
+                      >{{ list.name }}
+                    </ion-select-option>
+                  </div>
+                </ion-select>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </div>
       <ion-row>
         <ion-col>
           <ion-button

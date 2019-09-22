@@ -8,6 +8,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { List } from 'src/app/models/list';
+import { ListService } from 'src/app/services/list.service';
 
 @Component({
   selector: 'manage-add-task',
@@ -21,15 +23,20 @@ export class ManageTaskPage implements OnInit {
   taskId: string;
   date: string;
   userId: string;
+  lists: List[] = [];
   todayDate = new Date();
+  currentListName: string;
   today = new Date().toISOString().slice(0, 10);
   authSubscription: Subscription;
+  listSubscription: Subscription;
   maxDate: string;
   userIsAuthenticated = false;
+
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
     private router: Router,
+    private listService: ListService,
     private authService: AuthService
   ) {
     const year = this.todayDate.getFullYear();
@@ -39,6 +46,14 @@ export class ManageTaskPage implements OnInit {
   }
 
   ngOnInit() {
+    this.listSubscription = this.listService.getSubject().subscribe(
+      lists => {
+        this.lists = lists;
+      },
+      err => {
+        console.log('something went wrong');
+      }
+    );
     (async () => {
       this.authSubscription = this.authService
         .getAuthStatusListener()
@@ -48,7 +63,7 @@ export class ManageTaskPage implements OnInit {
         });
       this.userId = this.authService.getUserId();
       await this.delay(200);
-      console.log('User id: ' + this.userId);
+      this.listService.getListByUser(this.userId);
     })();
 
     this.form = new FormGroup({
@@ -59,40 +74,50 @@ export class ManageTaskPage implements OnInit {
       dueDate: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      listId: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
       })
     });
     this.task = new Task();
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('taskId')) {
-        // (async () => {
         this.mode = 'edit';
-        /* await this.delay(200);
-          })();*/
-
         this.taskId = paramMap.get('taskId');
         this.taskService.getTask(this.taskId, this.userId).subscribe(taskt => {
           this.task.id = taskt.task._id;
           this.form.value.title = taskt.task.title;
           this.task.state = taskt.task.state;
+          this.form.value.listId = taskt.task.listId;
           if (taskt.task.dueDate === null) {
             this.date = null;
           } else {
             this.date = new Date(taskt.task.dueDate).toISOString().slice(0, 10);
           }
-          this.form.setValue({
-            title: taskt.task.title,
-            dueDate: this.date
-          });
+          (async () => {
+            this.form.patchValue({
+              title: taskt.task.title,
+              dueDate: this.date
+            });
+          })();
           this.task.createdAt = taskt.task.createdAt;
           this.task.userId = taskt.task.userId;
         });
       }
     });
+    /*    this.listService.getList(this.form.value.listId).subscribe(
+      list=>{
+        this.lists.find(x => x.id == this.fo);
+      }
+    )
+    */
   }
 
   onSubmit() {
     this.task.title = this.form.value.title;
+    this.task.listId = this.form.value.listId;
     if (this.form.value.dueDate === null) {
       this.task.dueDate = null;
     } else {
@@ -104,8 +129,6 @@ export class ManageTaskPage implements OnInit {
       this.task.state = false;
       this.task.userId = this.userId;
 
-      console.log('typeof :' + this.task.dueDate);
-      console.log(JSON.stringify(this.task));
       this.taskService.addTask(this.task).subscribe(
         response => {
           console.log(response.message + 'Task id: ' + response.taskId);
@@ -116,7 +139,6 @@ export class ManageTaskPage implements OnInit {
         }
       );
     } else if (this.mode === 'edit') {
-      console.log(this.task);
       this.taskService.updateTask(this.task).subscribe(reponse => {
         console.log(reponse.message);
         this.taskService.getTasks(this.userId);
