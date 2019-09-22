@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { List } from '../models/list';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
@@ -67,7 +67,6 @@ export class ListService {
   }
 
   deleteList(listId: string) {
-    const list = this.getList(listId);
     this.deleteTasksByListIdAndUserId( list.id , list.userId );
     return this.http.delete<{ message: string; }>(
       this.GET_UPDATE_DELETE_LIST_URL + listId
