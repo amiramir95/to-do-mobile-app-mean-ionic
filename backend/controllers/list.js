@@ -1,9 +1,15 @@
 const List = require("../models/list");
+//const Task = require("../models/task");
+const taskController = require("../controllers/task");
+
+
 
 exports.getOneList = (req, res, next) => {
   List.findById(req.params.id)
     .then(list => {
-      res.status(200).json(list);
+      res.status(200).json({
+        list: list
+      });
     })
     .catch(error => {
       res.status(404).json({
@@ -11,7 +17,6 @@ exports.getOneList = (req, res, next) => {
       });
     });
 };
-
 
 
 exports.getListByUserId = (req, res, next) => {
@@ -75,7 +80,6 @@ exports.updateList = (req, res, next) => {
 };
 
 exports.deleteList = (req, res, next) => {
-  console.log("BACKEND in delete");
   List.deleteOne({ _id: req.params.id })
     .then(() => {
       res.status(200).json({

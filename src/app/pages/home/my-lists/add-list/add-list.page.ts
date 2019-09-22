@@ -50,7 +50,7 @@ export class AddListPage implements OnInit {
 
         this.listId = paramMap.get('listId');
         this.listService.getList(this.listId).subscribe(fetchedList => {
-          this.list.id = fetchedList.list._id;
+          this.list.id = fetchedList.list.id;
           this.list.name = fetchedList.list.name;
           this.list.userId = fetchedList.list.userId;
         });

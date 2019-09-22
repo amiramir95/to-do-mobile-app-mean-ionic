@@ -8,9 +8,11 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ListService {
-  private BASE_URL = 'http://localhost:3000/api/lists';
-  private LISTS_BY_USER_URL = `${this.BASE_URL}/userId/`;
-  private GET_UPDATE_DELETE_LIST_URL = `${this.BASE_URL}/`;
+  private LISTS_BASE_URL = 'http://localhost:3000/api/lists';
+  private TASKS_BASE_URL = 'http://localhost:3000/api/task';
+  private LISTS_BY_USER_URL = `${this.LISTS_BASE_URL}/userId/`;
+  private GET_UPDATE_DELETE_LIST_URL = `${this.LISTS_BASE_URL}/`;
+  private DELETE_USER_TASKS_BY_LIST = `${this.TASKS_BASE_URL}/`;
 
   private lists: List[] = [];
   private listsUpdated = new Subject<List[]>();
@@ -39,13 +41,13 @@ export class ListService {
   }
 
   getList(listId: string) {
-    return this.http.get<{ list: any }>(this.GET_UPDATE_DELETE_LIST_URL + listId);
+    return this.http.get<{ list: List }>(this.GET_UPDATE_DELETE_LIST_URL + listId);
   }
 
 
   addList(list: List) {
     return this.http.post<{ message: string; listId: string }>(
-      this.BASE_URL,
+      this.LISTS_BASE_URL,
       list
     );
   }
@@ -57,8 +59,16 @@ export class ListService {
     );
   }
 
+
+  deleteTasksByListIdAndUserId(listId: string, userId: string) {
+    return this.http.delete<{ message: string; }>(
+      this.GET_UPDATE_DELETE_LIST_URL + listId + '/' + userId
+    );
+  }
+
   deleteList(listId: string) {
-    console.log(this.GET_UPDATE_DELETE_LIST_URL + listId);
+    const list = this.getList(listId);
+    this.deleteTasksByListIdAndUserId( list.id , list.userId );
     return this.http.delete<{ message: string; }>(
       this.GET_UPDATE_DELETE_LIST_URL + listId
     );
