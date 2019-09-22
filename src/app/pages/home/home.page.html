@@ -5,7 +5,7 @@
       <ion-button [routerLink]="['/add-list']">
         <ion-icon slot="icon-only" name="addList"></ion-icon>
       </ion-button>
-      <ion-button [routerLink]="['/task']">
+      <ion-button [routerLink]="['task']">
         <ion-icon slot="icon-only" name="addTask"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,6 +13,6 @@
 </ion-header>
 
 <ion-content>
-  <app-my-lists></app-my-lists>
-  <!-- <app-list-tasks></app-list-tasks> -->
+  <!--  <app-my-lists></app-my-lists> -->
+  <app-list-tasks></app-list-tasks>
 </ion-content>
