@@ -41,7 +41,7 @@ export class AuthService {
 
   login(user: User) {
     this.http
-      .post<{ token: string; expiresIn: number }>(
+      .post<{ token: string; expiresIn: number; userId: string }>(
         'http://localhost:3000/api/auth/login',
         user
       )
@@ -52,6 +52,7 @@ export class AuthService {
           const expiresInDuration = response.expiresIn;
           console.log('expires in: ' + response.expiresIn);
           this.setAuthTimer(expiresInDuration);
+          this.userId = response.userId;
           this.isAuthenticated = true;
           this.authStatusListener.next(true);
           const now = new Date();
