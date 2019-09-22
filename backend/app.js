@@ -6,6 +6,8 @@ const taskRoutes = require('./routes/task');
 
 const listRoutes = require("./routes/list");
 
+const userRoutes = require('./routes/user');
+
 const app = express();
 
 mongoose
@@ -38,5 +40,6 @@ app.use((req, res, next) => {
 
 app.use("/api/lists", listRoutes);
 app.use('/api/task', taskRoutes);
+app.use('/api/auth', userRoutes);
 
 module.exports = app;
