@@ -13,6 +13,7 @@ export class TaskService {
   public ALL_TASKS_URL = `${this.BASE_URL}/byUser/`;
   private ADD_UPDATE_TASK_URL = `${this.BASE_URL}/`;
   private GET_TASK_URL = `${this.BASE_URL}/`;
+  private DELETE_TASK_URL = `${this.BASE_URL}/`;
 
   private tasks: Task[] = [];
   private tasksUpdated = new Subject<Task[]>();
@@ -62,6 +63,12 @@ export class TaskService {
     return this.http.put<{ message: string; tasks: any }>(
       this.ADD_UPDATE_TASK_URL + task.id,
       task
+    );
+  }
+
+  deleteList(tasktId: string) {
+    return this.http.delete<{ message: string }>(
+      this.DELETE_TASK_URL + tasktId
     );
   }
 }

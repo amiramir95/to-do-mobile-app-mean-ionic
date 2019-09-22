@@ -3,6 +3,7 @@ import { Task } from 'src/app/models/task';
 import { TaskService } from 'src/app/services/task.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { ListTasksComponent } from '../list-tasks/list-tasks.component';
 
 @Component({
   selector: 'manage-add-task',
@@ -39,6 +40,9 @@ export class ManageTaskPage implements OnInit {
           this.task.id = taskt.task._id;
           this.task.title = taskt.task.title;
           this.task.state = taskt.task.state;
+          if (taskt.task.dueDate === null) {
+            this.task.dueDate = null;
+          }
           this.task.dueDate = new Date(taskt.task.dueDate)
             .toISOString()
             .slice(0, 10);
@@ -58,6 +62,7 @@ export class ManageTaskPage implements OnInit {
       this.taskService.addTask(this.task).subscribe(
         response => {
           console.log(response.message + 'Task id: ' + response.taskId);
+          this.taskService.getTasks();
         },
         err => {
           console.log('something went wrong');
@@ -67,6 +72,7 @@ export class ManageTaskPage implements OnInit {
       console.log(this.task);
       this.taskService.updateTask(this.task).subscribe(reponse => {
         console.log(reponse.message);
+        this.taskService.getTasks();
       });
     }
     this.router.navigate(['/home']);

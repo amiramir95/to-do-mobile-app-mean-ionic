@@ -16,6 +16,10 @@ const routes: Routes = [
   {
     path: ':taskId',
     component: ManageTaskPage
+  },
+  {
+    path: 'delete/:taskId',
+    component: ManageTaskPage
   }
 ];
 
