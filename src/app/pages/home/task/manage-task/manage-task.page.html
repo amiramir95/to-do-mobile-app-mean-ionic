@@ -1,6 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>add-task</ion-title>
+    <ion-title *ngIf="this.mode !== 'edit'; else elseBlock">Add Task</ion-title>
+    <ng-template #elseBlock> Edit Task</ng-template>
+
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
@@ -8,14 +10,14 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="onSubmit()">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
     <ion-grid>
       <ion-row>
         <ion-col>
           <ion-item>
             <ion-label size="3" position="fixed">Title: </ion-label>
             <ion-input
-              [(ngModel)]="task.title"
+              formControlName="title"
               name="title"
               size="9"
             ></ion-input>
@@ -26,12 +28,13 @@
         <ion-col>
           <ion-item>
             <ion-label size="6">Due date (Optional): </ion-label>
-            <ion-input
-              type="date"
-              name="dueDate"
-              [(ngModel)]="task.dueDate"
-              size="6"
-            ></ion-input>
+            <ion-datetime
+              formControlName="dueDate"
+              displayFormat="YYYY-MM-DD"
+              [min]="this?.today"
+              [max]="this?.maxDate"
+            >
+            </ion-datetime>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -47,8 +50,8 @@
           >
           <ng-template #elseBlock>
             <ion-button expand="block" class="ion-padding" type="submit">
-              Edit Task</ion-button
-            >
+              Edit Task
+            </ion-button>
           </ng-template>
         </ion-col>
       </ion-row>

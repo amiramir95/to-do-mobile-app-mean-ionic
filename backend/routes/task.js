@@ -13,6 +13,7 @@ router.get('/byUser/:userId', auth, TaskController.getTaskByUserId);
 
 router.get('/:taskId', auth, TaskController.getTask);
 
-router.put('/:id', auth, TaskController.updateTask);
 
+router.delete('/:taskId', auth, TaskController.deleteTask);
+router.put('/:taskId', auth, TaskController.updateTask);
 module.exports = router;

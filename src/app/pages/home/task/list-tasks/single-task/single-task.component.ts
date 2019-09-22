@@ -11,27 +11,41 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 export class SingleTaskComponent implements OnInit {
   @Input() task: Task;
   @Output() taskCompleted = new EventEmitter<Task>();
+  @Output() taskDeleted = new EventEmitter<Task>();
+  dateColor: string;
+  todayDate = new Date();
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    const dueDate = new Date(this.task.dueDate);
+    if (this.todayDate > dueDate) {
+      this.dateColor = 'danger';
+    } else {
+      this.dateColor = 'tertiary';
+    }
+  }
 
   onTaskCompleted() {
     this.task.state = true;
     (async () => {
       await this.delay(500);
-      this.taskCompleted.emit(this.task);
+      this.taskService.updateTask(this.task).subscribe(response => {
+        console.log(response.message);
+        this.taskCompleted.emit(this.task);
+        this.taskService.getTasks();
+      });
     })();
-
-    /*this.taskService.updateTask(this.task).subscribe(response => {
-      console.log(response.message);
-    });*/
   }
 
-  onClick() {
-    console.log('test');
+  onDeletedTask() {
+    this.taskService.deleteList(this.task.id).subscribe(response => {
+      console.log(response.message);
+      this.taskDeleted.emit(this.task);
+      this.taskService.getTasks();
+    });
   }
   delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
