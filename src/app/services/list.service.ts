@@ -39,9 +39,10 @@ export class ListService {
   }
 
   getList(listId: string) {
-    return this.http.get<{ list: any }>(this.GET_UPDATE_DELETE_LIST_URL + listId);
+    return this.http.get<{ list: any }>(
+      this.GET_UPDATE_DELETE_LIST_URL + listId
+    );
   }
-
 
   addList(list: List) {
     return this.http.post<{ message: string; listId: string }>(
@@ -59,7 +60,7 @@ export class ListService {
 
   deleteList(listId: string) {
     console.log(this.GET_UPDATE_DELETE_LIST_URL + listId);
-    return this.http.delete<{ message: string; }>(
+    return this.http.delete<{ message: string }>(
       this.GET_UPDATE_DELETE_LIST_URL + listId
     );
   }

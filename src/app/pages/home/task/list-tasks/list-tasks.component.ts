@@ -47,7 +47,6 @@ export class ListTasksComponent implements OnInit, OnDestroy {
           this.userId = this.authService.getUserId();
         });
       await this.delay(200);
-      console.log('user Id ' + this.userId);
       this.taskService.getTasks(this.userId);
     })();
   }

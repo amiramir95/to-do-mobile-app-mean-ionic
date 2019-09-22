@@ -1,18 +1,18 @@
-const List = require("../models/list");
+const List = require('../models/list');
 
 exports.getOneList = (req, res, next) => {
   List.findById(req.params.id)
     .then(list => {
-      res.status(200).json(list);
+      res.status(200).json({
+        list: list
+      });
     })
     .catch(error => {
       res.status(404).json({
-        message: "List not found!"
+        message: 'List not found!'
       });
     });
 };
-
-
 
 exports.getListByUserId = (req, res, next) => {
   List.find({
@@ -20,36 +20,34 @@ exports.getListByUserId = (req, res, next) => {
   })
     .then(documents => {
       res.status(200).json({
-      lists: documents
-});
+        lists: documents
+      });
     })
     .catch(error => {
       res.status(404).json({
-        message: "User lists not found!"
+        message: 'User lists not found!'
       });
     });
 };
 
-
-
 exports.createList = (req, res, next) => {
-  console.log("in crateList");
+  console.log('in crateList');
   const list = new List({
     name: req.body.name,
     userId: req.body.userId
   });
-  console.log("list userId", list.userId);
+  console.log('list userId', list.userId);
   list
     .save()
     .then(createdList => {
       res.status(201).json({
-        message: "List added successfully",
+        message: 'List added successfully',
         listId: createdList._id
       });
     })
     .catch(error => {
       res.status(500).json({
-        message: "Creating a list failed!"
+        message: 'Creating a list failed!'
       });
     });
 };
@@ -63,7 +61,7 @@ exports.updateList = (req, res, next) => {
   List.updateOne({ _id: req.params.id }, list)
     .then(updatedList => {
       res.status(201).json({
-        message: "List updated successfully!",
+        message: 'List updated successfully!',
         listId: updatedList._id
       });
     })
@@ -75,16 +73,16 @@ exports.updateList = (req, res, next) => {
 };
 
 exports.deleteList = (req, res, next) => {
-  console.log("BACKEND in delete");
+  console.log('BACKEND in delete');
   List.deleteOne({ _id: req.params.id })
     .then(() => {
       res.status(200).json({
-        message: "List deleted!",
+        message: 'List deleted!'
       });
     })
     .catch(error => {
       res.status(500).json({
-        message: "Deleting a list failed!"
+        message: 'Deleting a list failed!'
       });
     });
 };
