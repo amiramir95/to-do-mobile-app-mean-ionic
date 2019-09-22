@@ -36,21 +36,17 @@ export class ListTasksComponent implements OnInit, OnDestroy {
       }
     );
     (async () => {
-      // Do something before delay
-      console.log('before delay');
       this.userId = this.authService.getUserId();
       this.userIsAuthenticated = this.authService.getIsAuth();
 
-      await this.delay(1000);
-      // Do something after
-      console.log('after delay');
+      await this.delay(200);
       this.authSubscription = this.authService
         .getAuthStatusListener()
         .subscribe(isAuthenticated => {
           this.userIsAuthenticated = isAuthenticated;
           this.userId = this.authService.getUserId();
         });
-      await this.delay(1000);
+      await this.delay(200);
       console.log('user Id ' + this.userId);
       this.taskService.getTasks(this.userId);
     })();
@@ -61,6 +57,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     this.taskSubscription = this.taskService.getSubject().subscribe(
       tasks => {
         this.tasks = tasks;
+        console.log(this.tasks);
       },
       err => {
         console.log('something went wrong');
