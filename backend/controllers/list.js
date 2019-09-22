@@ -33,10 +33,12 @@ exports.getListByUserId = (req, res, next) => {
 
 
 exports.createList = (req, res, next) => {
+  console.log("in crateList");
   const list = new List({
     name: req.body.name,
     userId: req.body.userId
   });
+  console.log("list userId", list.userId);
   list
     .save()
     .then(createdList => {
