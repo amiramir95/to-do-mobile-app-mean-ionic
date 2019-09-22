@@ -27,6 +27,13 @@
                 </ion-text>
               </div>
             </div>
+            <div *ngIf="this.task.dueDate">
+              <div class="offer-details">
+                <ion-text [color]="this?.dateColor" class="space-left">
+                  List: {{ this.task.dueDate | date }}
+                </ion-text>
+              </div>
+            </div>
           </ion-label>
           <ion-checkbox
             size="7"
