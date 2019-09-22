@@ -1,6 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>add-task</ion-title>
+    <ion-title *ngIf="this.mode !== 'edit'; else elseBlock">Add Task</ion-title>
+    <ng-template #elseBlock> Edit Task</ng-template>
+
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
@@ -48,8 +50,8 @@
           >
           <ng-template #elseBlock>
             <ion-button expand="block" class="ion-padding" type="submit">
-              Edit Task</ion-button
-            >
+              Edit Task
+            </ion-button>
           </ng-template>
         </ion-col>
       </ion-row>

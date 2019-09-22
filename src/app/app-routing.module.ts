@@ -8,7 +8,8 @@ const routes: Routes = [
     path: 'task',
     loadChildren:
       './pages/home/task/manage-task/manage-task.module#ManageTaskPageModule'
-  }
+  },
+  { path: 'auth', loadChildren: './pages/auth/auth.module#AuthPageModule' }
 ];
 
 @NgModule({
