@@ -29,8 +29,8 @@ const routes: Routes = [
     HomePage,
     ListTasksComponent,
     MyListsComponent,
-    SingleListComponent,
-    SingleTaskComponent
+    SingleTaskComponent,
+    SingleListComponent
   ]
 })
 export class HomePageModule {}
