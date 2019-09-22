@@ -17,10 +17,10 @@ export class ListService {
 
   constructor(private http: HttpClient) {}
 
-  getListByUser() {
+  getListByUser(userId: string) {
     // Get Connected User ID
     return this.http
-      .get<{ lists: any }>(this.LISTS_BY_USER_URL + '1')
+      .get<{ lists: any }>(this.LISTS_BY_USER_URL + userId)
       .pipe(
         map(response => {
           return response.lists.map(list => {
