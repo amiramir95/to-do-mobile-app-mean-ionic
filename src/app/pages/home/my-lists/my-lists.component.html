@@ -1,11 +1,4 @@
-<ion-list>
-  <ion-item>
-    <ion-label>Errands</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>Studies</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>Projects</ion-label>
-  </ion-item>
-</ion-list>
+<app-single-list
+  *ngFor="let list of lists"
+  [list]="list"
+></app-single-list>

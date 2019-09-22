@@ -12,12 +12,16 @@ exports.getOneList = (req, res, next) => {
     });
 };
 
+
+
 exports.getListByUserId = (req, res, next) => {
   List.find({
     userId: req.params.userId
   })
-    .then(lists => {
-      res.status(200).json(lists);
+    .then(documents => {
+      res.status(200).json({
+      lists: documents
+});
     })
     .catch(error => {
       res.status(404).json({
@@ -25,6 +29,8 @@ exports.getListByUserId = (req, res, next) => {
       });
     });
 };
+
+
 
 exports.createList = (req, res, next) => {
   const list = new List({
@@ -67,10 +73,11 @@ exports.updateList = (req, res, next) => {
 };
 
 exports.deleteList = (req, res, next) => {
+  console.log("BACKEND in delete");
   List.deleteOne({ _id: req.params.id })
     .then(() => {
       res.status(200).json({
-        message: "List deleted!"
+        message: "List deleted!",
       });
     })
     .catch(error => {
