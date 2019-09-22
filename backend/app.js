@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+var cors = require('cors');
 
 const taskRoutes = require('./routes/task');
 
-const listRoutes = require("./routes/list");
+const listRoutes = require('./routes/list');
 
 const userRoutes = require('./routes/user');
 
@@ -24,12 +25,12 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.options('*', cors());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    'Origin, X-Requested-With, Content-Type, Content, Accept, Authorization'
   );
   res.setHeader(
     'Access-Control-Allow-Methods',
@@ -38,7 +39,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/lists", listRoutes);
+app.use('/api/lists', listRoutes);
 app.use('/api/task', taskRoutes);
 app.use('/api/auth', userRoutes);
 

@@ -50,6 +50,7 @@ export class AuthService {
         this.token = token;
         if (token) {
           const expiresInDuration = response.expiresIn;
+          console.log('expires in: ' + response.expiresIn);
           this.setAuthTimer(expiresInDuration);
           this.isAuthenticated = true;
           this.authStatusListener.next(true);

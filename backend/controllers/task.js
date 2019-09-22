@@ -57,13 +57,12 @@ exports.getTask = (req, res, next) => {
   Task.findById(req.params.taskId)
     .then(document => {
       if (
-        JSON.stringify(document.userId) ===
-        JSON.stringify('5d8524a40b74db3244fdf951')
+        JSON.stringify(document.userId) === JSON.stringify(req.params.userId)
       ) {
         res.status(200).json({
           task: document
         });
-      } else if (document.userId !== '5d8524a40b74db3244fdf951') {
+      } else if (document.userId !== JSON.stringify(req.params.userId)) {
         res.status(401).json({
           message: 'Unauthorized, this is not your task'
         });

@@ -23,11 +23,9 @@ export class TaskService {
 
   constructor(private http: HttpClient) {}
 
-  getTasks() {
+  getTasks(userId: string) {
     return this.http
-      .get<{ message: string; tasks: any }>(
-        this.ALL_TASKS_URL + '5d8524a40b74db3244fdf951'
-      )
+      .get<{ message: string; tasks: any }>(this.ALL_TASKS_URL + userId)
       .pipe(
         map(response => {
           return response.tasks.map(task => {
@@ -47,7 +45,6 @@ export class TaskService {
           this.dueDate1 = new Date(n1.dueDate);
           this.dueDate2 = new Date(n2.dueDate);
           if (n1.dueDate === null && n2.dueDate === null) {
-            console.log('zouz');
             return 0;
           }
           if (
@@ -72,8 +69,10 @@ export class TaskService {
     return this.tasksUpdated.asObservable();
   }
 
-  getTask(taskId: string) {
-    return this.http.get<{ task: any }>(this.GET_TASK_URL + taskId);
+  getTask(taskId: string, userId: string) {
+    return this.http.get<{ task: any }>(
+      this.GET_TASK_URL + taskId + '/' + userId
+    );
   }
 
   addTask(task: Task) {

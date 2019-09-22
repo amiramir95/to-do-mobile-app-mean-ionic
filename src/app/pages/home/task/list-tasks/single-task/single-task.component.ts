@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Task } from 'src/app/models/task';
 import { TaskService } from 'src/app/services/task.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-single-task',
@@ -14,8 +16,11 @@ export class SingleTaskComponent implements OnInit {
   @Output() taskDeleted = new EventEmitter<Task>();
   dateColor: string;
   todayDate = new Date();
+  userId: string;
+  authSubscription: Subscription;
   constructor(
     private taskService: TaskService,
+    private authService: AuthService,
     private route: ActivatedRoute
   ) {}
 
@@ -26,6 +31,12 @@ export class SingleTaskComponent implements OnInit {
     } else {
       this.dateColor = 'tertiary';
     }
+    this.userId = this.authService.getUserId();
+    this.authSubscription = this.authService
+      .getAuthStatusListener()
+      .subscribe(isAuthenticated => {
+        this.userId = this.authService.getUserId();
+      });
   }
 
   onTaskCompleted() {
@@ -35,7 +46,7 @@ export class SingleTaskComponent implements OnInit {
       this.taskService.updateTask(this.task).subscribe(response => {
         console.log(response.message);
         this.taskCompleted.emit(this.task);
-        this.taskService.getTasks();
+        this.taskService.getTasks(this.userId);
       });
     })();
   }
@@ -44,7 +55,7 @@ export class SingleTaskComponent implements OnInit {
     this.taskService.deleteList(this.task.id).subscribe(response => {
       console.log(response.message);
       this.taskDeleted.emit(this.task);
-      this.taskService.getTasks();
+      this.taskService.getTasks(this.userId);
     });
   }
   delay(ms: number) {
