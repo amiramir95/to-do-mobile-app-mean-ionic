@@ -5,6 +5,9 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ListTasksComponent } from '../list-tasks/list-tasks.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { User } from 'src/app/models/user';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'manage-add-task',
@@ -15,15 +18,19 @@ export class ManageTaskPage implements OnInit {
   form: FormGroup;
   task: Task;
   mode: string = '';
-  postId: string;
+  taskId: string;
   date: string;
+  userId: string;
+  userIsAuthenticated = false;
   todayDate = new Date();
   today = new Date().toISOString().slice(0, 10);
+  authSubscription: Subscription;
   maxDate: string;
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     const year = this.todayDate.getFullYear();
     const month = this.todayDate.getMonth();
@@ -32,6 +39,13 @@ export class ManageTaskPage implements OnInit {
   }
 
   ngOnInit() {
+    this.authSubscription = this.authService
+      .getAuthStatusListener()
+      .subscribe(isAuthenticated => {
+        this.userIsAuthenticated = isAuthenticated;
+        this.userId = this.authService.getUserId();
+      });
+
     this.form = new FormGroup({
       title: new FormControl(null, {
         updateOn: 'blur',
@@ -51,8 +65,8 @@ export class ManageTaskPage implements OnInit {
         /* await this.delay(200);
           })();*/
 
-        this.postId = paramMap.get('taskId');
-        this.taskService.getTask(this.postId).subscribe(taskt => {
+        this.taskId = paramMap.get('taskId');
+        this.taskService.getTask(this.taskId, this.userId).subscribe(taskt => {
           this.task.id = taskt.task._id;
           this.form.value.title = taskt.task.title;
           this.task.state = taskt.task.state;
@@ -87,7 +101,7 @@ export class ManageTaskPage implements OnInit {
       this.taskService.addTask(this.task).subscribe(
         response => {
           console.log(response.message + 'Task id: ' + response.taskId);
-          this.taskService.getTasks();
+          this.taskService.getTasks(this.userId);
         },
         err => {
           console.log('something went wrong');
@@ -97,7 +111,7 @@ export class ManageTaskPage implements OnInit {
       console.log(this.task);
       this.taskService.updateTask(this.task).subscribe(reponse => {
         console.log(reponse.message);
-        this.taskService.getTasks();
+        this.taskService.getTasks(this.userId);
       });
     }
     this.router.navigate(['/home']);

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-login',
@@ -7,10 +9,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./login.page.scss']
 })
 export class LoginPage implements OnInit {
+  user: User;
   form: FormGroup;
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
+    this.user = new User();
     this.form = new FormGroup({
       username: new FormControl(null, {
         updateOn: 'blur',
@@ -23,8 +27,12 @@ export class LoginPage implements OnInit {
     });
   }
 
-  onSubmit() {
-    console.log(this.form.value.username);
-    console.log(this.form.value.password);
+  onLogin() {
+    if (this.form.invalid) {
+      return;
+    }
+    this.user.username = this.form.value.username;
+    this.user.password = this.form.value.password;
+    this.authService.login(this.user);
   }
 }

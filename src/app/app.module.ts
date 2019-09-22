@@ -9,8 +9,9 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ListTasksComponent } from './pages/home/task/list-tasks/list-tasks.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { AuthInterceptor } from './pages/auth/auth-interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +26,7 @@ import { DatePipe } from '@angular/common';
     StatusBar,
     SplashScreen,
     DatePipe,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
