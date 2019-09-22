@@ -11,6 +11,11 @@ const routes: Routes = [
   {
     path: '',
     component: AddListPage
+  },
+
+  {
+    path: ':id',
+    component: AddListPage
   }
 ];
 
