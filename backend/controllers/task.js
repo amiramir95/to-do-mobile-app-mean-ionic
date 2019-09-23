@@ -112,16 +112,17 @@ exports.deleteTask = (req, res, next) => {
     });
 };
 
-exports.deleteTaskByListIdAndUserId = (req, res, next) => {
-  Task.deleteMany({ listId: req.params.listId, userId: req.params.userId })
+exports.deleteTaskByListId = (req, res, next) => {
+  console.log("In Backend deleteTaskByListId ");
+  Task.deleteMany({ listId: req.params.listId })
     .then(() => {
       res.status(200).json({
-        message: "Tasks for list" + req.params.listId + "and user" + req.params.userId + " were deleted!"
+        message: "Tasks for list ID " + req.params.listId + " were deleted!"
       });
     })
     .catch(error => {
       res.status(500).json({
-        message: "Failed deletion : Tasks for list" +req.params.listId + "and user" + req.params.userId
+        message: "Failed deletion : Tasks for list" +req.params.listId
       });
     });
 };
