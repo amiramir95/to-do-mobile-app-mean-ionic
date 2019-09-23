@@ -71,6 +71,7 @@ exports.updateList = (req, res, next) => {
 };
 
 exports.deleteList = (req, res, next) => {
+  console.log('BACKEND in delete');
   List.deleteOne({ _id: req.params.id })
     .then(() => {
       res.status(200).json({

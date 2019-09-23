@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -11,7 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class SignupPage implements OnInit {
   form: FormGroup;
   user: User;
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.user = new User();
@@ -34,5 +35,6 @@ export class SignupPage implements OnInit {
     this.user.username = this.form.value.username;
     this.user.password = this.form.value.password;
     this.authService.createUser(this.user);
+    this.router.navigate(['/auth']);
   }
 }

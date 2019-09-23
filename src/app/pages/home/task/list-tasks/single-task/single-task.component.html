@@ -14,7 +14,7 @@
 
         <ion-item>
           <ion-label size="5">
-            {{ this.task.title }}
+            <div slot="top" class="ion-no-padding">{{ this.task.title }}</div>
             <div *ngIf="this.task.dueDate">
               <div class="offer-details">
                 <ion-icon
@@ -27,10 +27,10 @@
                 </ion-text>
               </div>
             </div>
-            <div *ngIf="this.task.dueDate">
+            <div *ngIf="this.task.listId">
               <div class="offer-details">
-                <ion-text [color]="this?.dateColor" class="space-left">
-                  List: {{ this.task.dueDate | date }}
+                <ion-text [color]="'primary'" class="space-left">
+                  List: {{ this.listName }}
                 </ion-text>
               </div>
             </div>

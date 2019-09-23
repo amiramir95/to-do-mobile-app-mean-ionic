@@ -5,17 +5,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AddListPage } from './add-list.page';
+import { HomeTasksPage } from './home-tasks.page';
+import { ListTasksComponent } from '../task/list-tasks/list-tasks.component';
+import { SingleTaskComponent } from '../task/list-tasks/single-task/single-task.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AddListPage
-  },
-
-  {
-    path: ':listId',
-    component: AddListPage
+    component: HomeTasksPage
   }
 ];
 
@@ -26,6 +23,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [AddListPage]
+  declarations: [HomeTasksPage, ListTasksComponent, SingleTaskComponent]
 })
-export class AddListPageModule {}
+export class HomeTasksPageModule {}

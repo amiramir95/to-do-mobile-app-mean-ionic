@@ -22,7 +22,8 @@ const routes: Routes = [
       './pages/home/task/manage-task/manage-task.module#ManageTaskPageModule',
     canActivate: [AuthGuard]
   },
-  { path: 'auth', loadChildren: './pages/auth/auth.module#AuthPageModule' }
+  { path: 'auth', loadChildren: './pages/auth/auth.module#AuthPageModule' },  { path: 'home-tasks', loadChildren: './pages/home/home-tasks/home-tasks.module#HomeTasksPageModule' }
+
 ];
 
 @NgModule({

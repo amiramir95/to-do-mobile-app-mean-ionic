@@ -22,6 +22,7 @@ export class ListService {
 
   getListByUser(userId: string) {
     // Get Connected User ID
+
     return this.http
       .get<{ lists: any }>(this.LISTS_BY_USER_URL + userId)
       .pipe(
@@ -36,9 +37,14 @@ export class ListService {
         })
       )
       .subscribe(transformedLists => {
+        console.log('9bak next');
         this.lists = transformedLists;
         this.listsUpdated.next([...this.lists]);
       });
+  }
+
+  getSubject() {
+    return this.listsUpdated.asObservable();
   }
 
   getList(listId: string) {
@@ -73,7 +79,15 @@ export class ListService {
     );
   }
 
+  deleteTasksByListIdAndUserId(listId: string, userId: string) {
+    return this.http.delete<{ message: string }>(
+      this.GET_UPDATE_DELETE_LIST_URL + listId + '/' + userId
+    );
+  }
+
   deleteList(listId: string) {
+    const list = this.getList(listId);
+    //    this.deleteTasksByListIdAndUserId(list.id, list.userId);
     return this.http.delete<{ message: string }>(
       this.GET_UPDATE_DELETE_LIST_URL + listId
     );
@@ -123,10 +137,6 @@ export class ListService {
     );
 
   }*/
-
-  getSubject() {
-    return this.listsUpdated.asObservable();
-  }
 
   delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
