@@ -1,1 +1,17 @@
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>
+          All Tasks
+        </ion-label>
+        <ion-buttons slot="end">
+          <ion-button [routerLink]="['/home-tasks']">
+            <ion-icon name="arrow-forward"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-grid>
 <app-single-list *ngFor="let list of lists" [list]="list"></app-single-list>

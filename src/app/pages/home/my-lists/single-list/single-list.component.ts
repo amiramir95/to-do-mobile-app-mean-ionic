@@ -43,6 +43,7 @@ export class SingleListComponent implements OnInit {
   deleteList(listId: string) {
     this.listService.deleteTaskByListId(listId).subscribe(res1 => {
       this.listService.deleteList(listId).subscribe(res2 => {
+        this.listService.getListByUser(this.userId);
         console.log('output first response');
         console.log(res1);
         console.log('output second response');

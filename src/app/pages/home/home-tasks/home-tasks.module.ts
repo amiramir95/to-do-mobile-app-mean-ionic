@@ -13,6 +13,10 @@ const routes: Routes = [
   {
     path: '',
     component: HomeTasksPage
+  },
+  {
+    path: ':listId',
+    component: HomeTasksPage
   }
 ];
 

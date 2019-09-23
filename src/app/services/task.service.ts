@@ -76,6 +76,52 @@ export class TaskService {
     );
   }
 
+  getTasksByListId(userId: string, listId: string) {
+    return this.http
+      .get<{ message: string; tasks: any }>(this.ALL_TASKS_URL + userId)
+      .pipe(
+        map(response => {
+          return response.tasks.map(task => {
+            return {
+              id: task._id,
+              title: task.title,
+              state: task.state,
+              createdAt: task.createdAt,
+              dueDate: task.dueDate,
+              listId: task.listId
+            };
+          });
+        })
+      )
+      .pipe(
+        map(task => task.filter(taskSingle => taskSingle.listId === listId))
+      )
+      .pipe(map(task => task.filter(taskSingle => !taskSingle.state)))
+      .subscribe(transformedTasks => {
+        this.tasks = transformedTasks.sort((n1, n2) => {
+          this.dueDate1 = new Date(n1.dueDate);
+          this.dueDate2 = new Date(n2.dueDate);
+          if (n1.dueDate === null && n2.dueDate === null) {
+            return 0;
+          }
+          if (
+            (n1.dueDate === null && n2.dueDate !== null) ||
+            (n2.dueDate !== null && this.dueDate1 > this.dueDate2)
+          ) {
+            return 1;
+          }
+          if (
+            (n2.dueDate === null && n1.dueDate !== null) ||
+            (n1.dueDate !== null && this.dueDate1 < this.dueDate2)
+          ) {
+            return -1;
+          }
+          return 0;
+        });
+        this.tasksUpdated.next([...this.tasks]);
+      });
+  }
+
   addTask(task: Task) {
     return this.http.post<{ message: string; taskId: string }>(
       this.ADD_UPDATE_TASK_URL,
