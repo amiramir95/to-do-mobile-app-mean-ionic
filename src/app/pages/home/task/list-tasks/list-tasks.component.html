@@ -2,5 +2,7 @@
   <app-single-task *ngFor="let task of tasks" [task]="task"></app-single-task>
 </div>
 <div *ngIf="this.arrayEmpty">
-  You Have No Tasks Here
+  <ion-card>
+    <ion-card-content> You Have No Tasks Here </ion-card-content>
+  </ion-card>
 </div>

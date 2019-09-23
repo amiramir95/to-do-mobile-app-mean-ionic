@@ -30,6 +30,7 @@ export class ManageTaskPage implements OnInit {
   authSubscription: Subscription;
   listSubscription: Subscription;
   maxDate: string;
+  newDate: Date;
   userIsAuthenticated = false;
 
   constructor(
@@ -121,14 +122,19 @@ export class ManageTaskPage implements OnInit {
     if (this.form.value.dueDate === null) {
       this.task.dueDate = null;
     } else {
-      this.task.dueDate = new Date(this.form.value.dueDate)
-        .toISOString()
-        .slice(0, 10);
+      if (this.task.listId === null) {
+        const date = new Date(this.form.value.dueDate);
+        this.newDate = new Date(date.getTime() + 1000 * 60 * 60 * 24);
+      } else {
+        this.newDate = this.form.value.dueDate;
+      }
+      console.log('new Date: ' + this.form.value.dueDate);
+      this.task.dueDate = new Date(this.newDate).toISOString().slice(0, 10);
+      console.log(this.form.value.dueDate);
     }
     if (this.mode !== 'edit') {
       this.task.state = false;
       this.task.userId = this.userId;
-
       this.taskService.addTask(this.task).subscribe(
         response => {
           console.log(response.message + 'Task id: ' + response.taskId);
@@ -139,10 +145,16 @@ export class ManageTaskPage implements OnInit {
         }
       );
     } else if (this.mode === 'edit') {
-      this.taskService.updateTask(this.task).subscribe(reponse => {
-        console.log(reponse.message);
-        this.taskService.getTasks(this.userId);
-      });
+      (async () => {
+        this.taskService.getTask(this.taskId, this.userId).subscribe(task => {
+          this.task.listId = task.task.listId;
+        });
+        await this.delay(200);
+        this.taskService.updateTask(this.task).subscribe(reponse => {
+          console.log(reponse.message);
+          this.taskService.getTasks(this.userId);
+        });
+      })();
     }
     this.router.navigate(['/home-tasks']);
   }

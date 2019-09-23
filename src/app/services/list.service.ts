@@ -37,7 +37,6 @@ export class ListService {
         })
       )
       .subscribe(transformedLists => {
-        console.log('9bak next');
         this.lists = transformedLists;
         this.listsUpdated.next([...this.lists]);
       });
