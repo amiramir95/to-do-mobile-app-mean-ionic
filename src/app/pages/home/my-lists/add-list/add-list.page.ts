@@ -59,11 +59,13 @@ export class AddListPage implements OnInit {
   }
 
   onSubmit() {
+    this.list.id = this.listId;
     if (this.editRouteActivated === false) {
       this.list.userId = this.connectedUserId; // get connected UserId
       this.listService.addList(this.list).subscribe(
         response => {
           console.log(response.message + 'List id: ' + response.listId);
+          this.listService.getListByUser(this.connectedUserId);
         },
         err => {
           console.log('something went wrong');
@@ -72,6 +74,7 @@ export class AddListPage implements OnInit {
     } else if (this.editRouteActivated === true) {
       this.listService.updateList(this.list).subscribe(reponse => {
         console.log(reponse.message);
+        this.listService.getListByUser(this.connectedUserId);
       });
     }
     this.router.navigate(['/home']);

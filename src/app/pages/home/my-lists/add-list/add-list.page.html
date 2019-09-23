@@ -1,6 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>add-list</ion-title>
+    <ion-title *ngIf="!this.editRouteActivated; else elseBlock"
+      >Add List</ion-title
+    >
+    <ng-template #elseBlock>
+      <ion-title>Edit List</ion-title>
+    </ng-template>
+
     <ion-buttons slot="start">
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
@@ -20,9 +26,16 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-button expand="block" class="ion-padding" type="submit">
-            Add List</ion-button
-          >
+          <div *ngIf="!this.editRouteActivated; else elseBlock2">
+            <ion-button expand="block" class="ion-padding" type="submit">
+              Add List</ion-button
+            >
+          </div>
+          <ng-template #elseBlock2>
+            <ion-button expand="block" class="ion-padding" type="submit">
+              Edit List</ion-button
+            >
+          </ng-template>
         </ion-col>
       </ion-row>
     </ion-grid>

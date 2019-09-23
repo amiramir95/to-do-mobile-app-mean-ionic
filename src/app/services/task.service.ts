@@ -34,7 +34,8 @@ export class TaskService {
               title: task.title,
               state: task.state,
               createdAt: task.createdAt,
-              dueDate: task.dueDate
+              dueDate: task.dueDate,
+              listId: task.listId
             };
           });
         })

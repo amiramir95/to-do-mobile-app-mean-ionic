@@ -4,6 +4,7 @@ import { TaskService } from 'src/app/services/task.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { ListService } from 'src/app/services/list.service';
 
 @Component({
   selector: 'app-single-task',
@@ -15,11 +16,13 @@ export class SingleTaskComponent implements OnInit {
   @Output() taskCompleted = new EventEmitter<Task>();
   @Output() taskDeleted = new EventEmitter<Task>();
   dateColor: string;
+  listName: string;
   todayDate = new Date();
   userId: string;
   authSubscription: Subscription;
   constructor(
     private taskService: TaskService,
+    private listService: ListService,
     private authService: AuthService,
     private route: ActivatedRoute
   ) {}
@@ -31,12 +34,21 @@ export class SingleTaskComponent implements OnInit {
     } else {
       this.dateColor = 'tertiary';
     }
-    this.userId = this.authService.getUserId();
-    this.authSubscription = this.authService
-      .getAuthStatusListener()
-      .subscribe(isAuthenticated => {
-        this.userId = this.authService.getUserId();
-      });
+    (async () => {
+      this.userId = this.authService.getUserId();
+      this.authSubscription = this.authService
+        .getAuthStatusListener()
+        .subscribe(isAuthenticated => {
+          this.userId = this.authService.getUserId();
+        });
+      await this.delay(100);
+      if (this.task.listId) {
+        this.listService.getList(this.task.listId).subscribe(list => {
+          this.listName = list.list.name;
+        });
+      }
+      await this.delay(100);
+    })();
   }
 
   onTaskCompleted() {
@@ -58,6 +70,7 @@ export class SingleTaskComponent implements OnInit {
       this.taskService.getTasks(this.userId);
     });
   }
+
   delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
