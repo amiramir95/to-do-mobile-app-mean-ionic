@@ -57,7 +57,6 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     this.taskSubscription = this.taskService.getSubject().subscribe(
       tasks => {
         this.tasks = tasks;
-        console.log(this.tasks);
       },
       err => {
         console.log('something went wrong');
@@ -69,7 +68,6 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     this.taskSubscription.unsubscribe();
     this.authSubscription.unsubscribe();
   }
-
   delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }

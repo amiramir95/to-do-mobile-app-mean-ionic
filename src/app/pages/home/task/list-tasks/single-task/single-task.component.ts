@@ -34,21 +34,18 @@ export class SingleTaskComponent implements OnInit {
     } else {
       this.dateColor = 'tertiary';
     }
-    (async () => {
-      this.userId = this.authService.getUserId();
-      this.authSubscription = this.authService
-        .getAuthStatusListener()
-        .subscribe(isAuthenticated => {
-          this.userId = this.authService.getUserId();
-        });
-      await this.delay(100);
-      if (this.task.listId) {
-        this.listService.getList(this.task.listId).subscribe(list => {
-          this.listName = list.list.name;
-        });
-      }
-      await this.delay(100);
-    })();
+
+    this.userId = this.authService.getUserId();
+    this.authSubscription = this.authService
+      .getAuthStatusListener()
+      .subscribe(isAuthenticated => {
+        this.userId = this.authService.getUserId();
+      });
+    if (this.task.listId) {
+      this.listService.getList(this.task.listId).subscribe(list => {
+        this.listName = list.list.name;
+      });
+    }
   }
 
   onTaskCompleted() {
