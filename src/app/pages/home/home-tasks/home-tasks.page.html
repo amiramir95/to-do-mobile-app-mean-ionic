@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>My Tasks</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button [routerLink]="['/task']">
+        <ion-icon name="add"></ion-icon
+      ></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-list-tasks></app-list-tasks>
+</ion-content>

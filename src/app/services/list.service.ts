@@ -74,7 +74,7 @@ export class ListService {
 
   deleteList(listId: string) {
     const list = this.getList(listId);
-    this.deleteTasksByListIdAndUserId(list.id, list.userId);
+    //    this.deleteTasksByListIdAndUserId(list.id, list.userId);
     return this.http.delete<{ message: string }>(
       this.GET_UPDATE_DELETE_LIST_URL + listId
     );

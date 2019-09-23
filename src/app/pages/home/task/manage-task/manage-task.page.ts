@@ -144,7 +144,7 @@ export class ManageTaskPage implements OnInit {
         this.taskService.getTasks(this.userId);
       });
     }
-    this.router.navigate(['/home']);
+    this.router.navigate(['/home-tasks']);
   }
 
   delay(ms: number) {
