@@ -18,6 +18,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   userId: string;
   userIsAuthenticated = false;
   routeHasParam = false;
+  arrayEmpty = false;
   listId: string;
   private authSubscription: Subscription;
   constructor(
@@ -58,8 +59,11 @@ export class ListTasksComponent implements OnInit, OnDestroy {
           this.userId = this.authService.getUserId();
         });
       await this.delay(200);
-      // this.taskService.getTasks(this.userId);
       this.getTasks();
+      await this.delay(200);
+      if (this.tasks.length === 0) {
+        this.arrayEmpty = true;
+      }
     })();
   }
 
