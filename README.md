@@ -4,4 +4,4 @@ Conception et Developpement d’une application mobile de gestion de tâches uti
 
 Outils: Node.JS, Express.JS, Angular, Ionic 4, MongoDB.
 
-Projet en collaboration avec Amir Aloui: https://github.com/amiramir95
+Projet en collaboration avec Youssef Tarzi: https://github.com/yousseftarzi
